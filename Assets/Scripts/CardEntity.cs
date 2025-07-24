@@ -8,13 +8,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [CreateAssetMenu(fileName = "CardEntity" , menuName = "Create CardEntity")]
-
+    
 public class CardEntity : ScriptableObject
 {
-    public int cardId;
-    public new string name;
-    public int cost;
-    public int power;
-    public Sprite icon;
+    public string cardName;
+    public Sprite cardImage;
+    public int attackPower;
     public int hp;
+    public int cost;
+    // コンストラクタは不要（ScriptableObjectでは使わない）
 }

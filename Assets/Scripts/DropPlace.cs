@@ -1,4 +1,4 @@
-// DropPlace
+// DropPlace.cs
 //
 // フィールドに置く処理を行います
 //
@@ -10,15 +10,33 @@ using UnityEngine.EventSystems;
 // フィールドにアタッチするクラス
 public class DropPlace : MonoBehaviour , IDropHandler
 {
-    // ドロップされた時に行う処理
+    private Canvas canvas;
+    private RectTransform rectTransform;
+
+    private void Awake()
+    {
+        canvas = GetComponentInParent<Canvas>();
+        rectTransform = GetComponent<RectTransform>();
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
-        CardMovement card = eventData.pointerDrag.GetComponent<CardMovement>();
+        Debug.Log("DropPlace にカードがドロップされました: " + gameObject.name);
 
-        // もしカードがある場合、カードの親要素を自分にする
-        if(card  != null)
+        if (canvas == null || rectTransform == null)
         {
-            card.cardParent = this.transform;
+            Debug.LogError("canvas または rectTransform が null です！");
+            return;
+        }
+
+        // ドロップされたオブジェクトを取得
+        GameObject droppedCard = eventData.pointerDrag;
+
+        if (droppedCard != null)
+        {
+            droppedCard.transform.SetParent(transform, false);
+            droppedCard.transform.SetSiblingIndex(transform.childCount - 1);
+            Debug.Log("カードを DropPlace に配置しました: " + droppedCard.name);
         }
     }
 }

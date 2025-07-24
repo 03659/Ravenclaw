@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Assertions;
 
 public class CardController : MonoBehaviour
 {
@@ -18,15 +19,17 @@ public class CardController : MonoBehaviour
     private void Awake()
     {
         view = GetComponent<CardView>();
+
+        if (view == null)
+        {
+            Debug.LogError("CardView を取得できませんでした！");
+        }
     }
     
     // カードを生成したときに呼ばれる関数
     public void Init(int cardID)
     {
-        // カードデータを生成
         model = new CardModel(cardID);
-
-        // 表示
         view.Show(model);
     }
 }

@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b74c0e3d36e771641b051d9cc28a58cb, type: 3}
   m_Name: Card2
   m_EditorClassIdentifier: 
-  cardId: 2
-  name: "\u68EE\u306E\u5996\u7CBE"
-  cost: 0
-  power: 1
-  icon: {fileID: 5766605393469902792, guid: c94e667834fca034b83cb41a427059f0, type: 3}
+  cardName: "\u68EE\u306E\u5996\u7CBE"
+  cardImage: {fileID: 5766605393469902792, guid: c94e667834fca034b83cb41a427059f0, type: 3}
+  attackPower: 1
   hp: 30
+  cost: 0

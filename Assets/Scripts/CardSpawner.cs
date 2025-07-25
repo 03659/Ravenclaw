@@ -12,31 +12,44 @@ public class CardSpawner : MonoBehaviour
     [SerializeField] private Transform playerHandTransform;
     [SerializeField] public List<CardEntity> cardDataList = new List<CardEntity>();
     [SerializeField] private Canvas mainCanvas;
-
+    private int index;
 
     public void SpawnCard()
     {
-        int index = UnityEngine.Random.Range(0, cardDataList.Count);
+        Card newCard = Instantiate(cardPrefab, playerHandTransform);
+        newCard.SetEntity(cardDataList[index]);
 
-        Card card = Instantiate(cardPrefab, playerHandTransform); // 最初は手札に出す
-        card.SetEntity(cardDataList[index]);
-
-        // ドラッグ後に PlayerField に移動できるように設定
-        card.GetComponent<CardMovement>().SetDropTarget(playerFieldTransform); // ドラッグ後に移動できるようにする
-        CardMovement movement = card.GetComponent<CardMovement>();
+        CardMovement movement = newCard.GetComponent<CardMovement>();
         movement.SetCanvas(mainCanvas);
         movement.SetDropTarget(playerFieldTransform);
     }
 
     private void Start()
     {
-        Debug.Log("CardSpawner Start() 呼び出し！: " + gameObject.name);
-
         for (int i = 0; i < 5; i++)
         {
-            Debug.Log("SpawnCard #" + (i + 1));
-            SpawnCard();
+            Debug.Log("CardSpawner Start() が呼ばれました");
+
+            int dataIndex = i % cardDataList.Count; // 0,1,2,0,1 のようにループ
+            SpawnCard(dataIndex);
         }
     }
 
+    private void SpawnCard(int i)
+    {
+        if (i < 0 || i >= cardDataList.Count)
+        {
+            Debug.LogWarning("カードデータが存在しません: index = " + i);
+            return;
+        }
+
+        Card newCard = Instantiate(cardPrefab, playerHandTransform);
+        newCard.SetEntity(cardDataList[i]);
+
+        CardMovement movement = newCard.GetComponent<CardMovement>();
+        movement.SetCanvas(mainCanvas);
+        movement.SetDropTarget(playerFieldTransform);
+
+        Debug.Log("カード生成成功: " + newCard.name + " → PlayerFieldターゲット: " + playerFieldTransform.name);
+    }
 }

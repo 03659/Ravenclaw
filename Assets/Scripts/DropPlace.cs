@@ -12,6 +12,16 @@ public class DropPlace : MonoBehaviour , IDropHandler
 {
     private Canvas canvas;
     private RectTransform rectTransform;
+    public Transform cardContainer; // ← ここにカードを置く
+    public Vector2 originalPosition;
+
+    void Start()
+    {
+        if (cardContainer == null)
+        {
+            cardContainer = this.transform;
+        }
+    }
 
     private void Awake()
     {
@@ -21,22 +31,39 @@ public class DropPlace : MonoBehaviour , IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("DropPlace にカードがドロップされました: " + gameObject.name);
+        GameObject droppedCard = eventData.pointerDrag;
 
-        if (canvas == null || rectTransform == null)
+        if (droppedCard == null)
         {
-            Debug.LogError("canvas または rectTransform が null です！");
+            Debug.LogWarning("ドロップされたカードが null です");
             return;
         }
 
-        // ドロップされたオブジェクトを取得
-        GameObject droppedCard = eventData.pointerDrag;
-
-        if (droppedCard != null)
+        CardMovement movement = droppedCard.GetComponent<CardMovement>();
+        if (movement == null)
         {
-            droppedCard.transform.SetParent(transform, false);
-            droppedCard.transform.SetSiblingIndex(transform.childCount - 1);
-            Debug.Log("カードを DropPlace に配置しました: " + droppedCard.name);
+            Debug.LogWarning("CardMovement コンポーネントが見つかりません");
+            return;
         }
+
+        // PlayerField にすでに3枚あるかチェック
+        if (cardContainer.childCount >= 3)
+        {
+            Debug.Log("PlayerField は満杯です！カードを元に戻します");
+
+            droppedCard.transform.SetParent(movement.originalParent, false);
+            droppedCard.GetComponent<RectTransform>().anchoredPosition = movement.originalPosition;
+
+            Debug.Log("カードを戻しました: " + droppedCard.name);
+
+            return;
+        }
+
+        // ドロップ成功 → PlayerField に移動
+        droppedCard.transform.SetParent(cardContainer, false);
+        droppedCard.transform.SetAsLastSibling();
+        droppedCard.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+        Debug.Log("カードを PlayerField に配置しました: " + droppedCard.name);
     }
 }

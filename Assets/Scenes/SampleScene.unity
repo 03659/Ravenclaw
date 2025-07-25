@@ -151,7 +151,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 3197873275228413225, guid: 22b32d775d55c4c4cadf60cc5bde5224, type: 3}
   playerHand: {fileID: 428323904}
-  playerField: {fileID: 581736296}
   cardParent: {fileID: 0}
 --- !u!224 &267453390
 RectTransform:
@@ -186,11 +185,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: -2599182255228943053, guid: 22b32d775d55c4c4cadf60cc5bde5224, type: 3}
+  cardParent: {fileID: 0}
+  playerFieldTransform: {fileID: 0}
+  playerHandTransform: {fileID: 0}
   cardDataList:
   - {fileID: 11400000, guid: 8ad55bb0d44e86b449b17a98330d2462, type: 2}
   - {fileID: 11400000, guid: c752d1c23b357eb4aad8a665397e6eca, type: 2}
   - {fileID: 11400000, guid: 437320cd59fca3d47b391bc934a9cfec, type: 2}
-  canvas: {fileID: 1353541565}
+  mainCanvas: {fileID: 0}
 --- !u!1 &329708080
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,6 +733,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b2f664f391a3745937ca52a85c6784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardContainer: {fileID: 581736296}
+  originalPosition: {x: 0, y: 0}
 --- !u!225 &581736301
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -840,6 +844,7 @@ RectTransform:
   - {fileID: 428323904}
   - {fileID: 581736296}
   - {fileID: 2091907118}
+  - {fileID: 1459718146}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -847,6 +852,56 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1459718145
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1459718146}
+  - component: {fileID: 1459718147}
+  m_Layer: 5
+  m_Name: CardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1459718146
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459718145}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1353541566}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -11.644, y: -247.67}
+  m_SizeDelta: {x: 1536.7, y: 555.34}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1459718147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459718145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8592e39fdd2601b40abff7f0296f59c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardPrefab: {fileID: 0}
+  playerHandTransform: {fileID: 0}
 --- !u!114 &1784973429 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7065772168750910277, guid: 22b32d775d55c4c4cadf60cc5bde5224, type: 3}

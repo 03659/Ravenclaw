@@ -14,8 +14,9 @@ public class CardMovement : MonoBehaviour , IDragHandler , IBeginDragHandler , I
     private CanvasGroup canvasGroup;
     private Vector2 offset;
 
-    private Transform playerFieldTransform; // ← SerializeField を外す！
-    private Transform originalParent;
+    public Transform playerFieldTransform;
+    public Transform originalParent;
+    public Vector2 originalPosition;
 
     public void SetDropTarget(Transform target)
     {
@@ -51,6 +52,9 @@ public class CardMovement : MonoBehaviour , IDragHandler , IBeginDragHandler , I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        originalParent = transform.parent;
+        originalPosition = GetComponent<RectTransform>().anchoredPosition;
+
         canvasGroup.blocksRaycasts = false;
         // マウス位置をローカル座標に変換
         Vector2 localPoint;
@@ -63,45 +67,28 @@ public class CardMovement : MonoBehaviour , IDragHandler , IBeginDragHandler , I
         // オフセットを記録（カードの位置 - マウス位置）
         offset = rectTransform.anchoredPosition - localPoint;
 
+        originalParent = transform.parent;
+
+        canvasGroup.blocksRaycasts = false;
+
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 localPoint;
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvas.transform as RectTransform,
             eventData.position,
             eventData.pressEventCamera,
-            out localPoint))
-        {
-            // オフセットを加えてカードの位置を更新
-            rectTransform.anchoredPosition = localPoint + offset;
-        }
+            out localPoint
+        );
+
+        rectTransform.anchoredPosition = localPoint + offset;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = true;
-
-        if (playerFieldTransform == null)
-        {
-            Debug.LogError("playerFieldTransform が null！");
-            return;
-        }
-
-        // ここで制限をかける
-        if (playerFieldTransform.childCount >= 3)
-        {
-            Debug.Log("PlayerField はすでに3枚のカードが置かれています！");
-            // 元の位置に戻す（手札など）
-            transform.SetParent(originalParent, false);
-            return;
-        }
-
-        // ドロップ成功 → PlayerField に移動
-        transform.SetParent(playerFieldTransform, false);
-        transform.localScale = Vector3.one;
-        transform.SetSiblingIndex(playerFieldTransform.childCount - 1);
     }
 
     public void SetCanvas(Canvas c)
